@@ -1,0 +1,110 @@
+@mixin text-ellipsis() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin texts-ellipsis($lineNumber: 3) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: $lineNumber;
+  -webkit-box-orient: vertical;
+}
+
+@mixin setTransition($el, $time, $fn) {
+  transition: $el $time $fn;
+  -moz-transition: $el $time $fn;
+  -webkit-transition: $el $time $fn;
+}
+
+@mixin keyframes($animationName) {
+  @-webkit-keyframes #{$animationName} {
+    @content;
+  }
+  @-moz-keyframes #{$animationName} {
+    @content;
+  }
+  @-o-keyframes #{$animationName} {
+    @content;
+  }
+  @keyframes #{$animationName} {
+    @content;
+  }
+}
+
+@mixin animation($name, $time, $delay, $fn, $status) {
+  animation: $name $time $delay $fn $status;
+  -moz-animation: $name $time $delay $fn $status;
+  -webkit-animation: $name $time $delay $fn $status;
+  -o-animation: $name $time $delay $fn $status;
+}
+
+@mixin scrollBar() {
+  /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+  ::-webkit-scrollbar {
+    outline: none;
+    width: 10px;
+    height: 10px;
+    background-color: #1e1e1e;
+  }
+  /*定义滚动条轨道 内阴影+圆角*/
+  ::-webkit-scrollbar-track {
+    background-color: #1e1e1e;
+  }
+  /*定义滑块 内阴影+圆角*/
+  ::-webkit-scrollbar-thumb {
+    background-color: #333333;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    outline: none;
+    background-color: rgba(80, 80, 80, 1);
+  }
+}
+
+@mixin positionMiddle() {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+/* responsible layout */
+@mixin Mobile {
+  @media screen and (max-width: 959px) {
+    @content;
+  }
+}
+
+@mixin PC {
+  @media screen and (min-width: 960px) {
+    @content;
+  }
+}
+/* Mobile */
+@mixin screenXS {
+  @media screen and (max-width: 599px) {
+    @content;
+  }
+}
+@mixin screenSM {
+  @media screen and (min-width: 600px) and (max-width: 959px) {
+    @content;
+  }
+}
+/* PC */
+@mixin screenMD {
+  @media screen and (min-width: 960px) and (max-width: 1263px) {
+    @content;
+  }
+}
+@mixin screenLG {
+  @media screen and (min-width: 1264px) and (max-width: 1903px) {
+    @content;
+  }
+}
+@mixin screenXL {
+  @media screen and (min-width: 1904px) {
+    @content;
+  }
+}
