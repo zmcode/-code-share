@@ -78,21 +78,21 @@ export default {
     return {
       qiNiuImgLink,
       menuList: Object.freeze([
-        {
-          name: "我的",
-          value: "user",
-          icon: "mdi-account-outline",
-        },
+        // {
+        //   name: "我的",
+        //   value: "user",
+        //   icon: "mdi-account-outline",
+        // },
         {
           name: "新建实例",
           value: "newWork",
           icon: "mdi-plus-circle-outline",
         },
-        {
-          name: "设置",
-          value: "settings",
-          icon: "mdi-cog-outline",
-        },
+        // {
+        //   name: "设置",
+        //   value: "settings",
+        //   icon: "mdi-cog-outline",
+        // },
         {
           name: "退出登录",
           value: "logout",
@@ -109,7 +109,9 @@ export default {
     handleMenu(val) {
       switch (val) {
         case "user": {
-          this.$router.push(`/html/user/${this.loginInfo.id}`).catch((err) => {});
+          this.$router
+            .push(`/html/user/${this.loginInfo.id}`)
+            .catch((err) => {});
           break;
         }
         case "newWork": {

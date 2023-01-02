@@ -3,7 +3,6 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
-import cookie from "./utils/cookie";
 
 import "@assets/css/code-font.css";
 
@@ -29,9 +28,6 @@ Vue.filter("formatNumber", function (num) {
   return num >= 1e3 ? (num / 1e3).toFixed(1) + "k" : num;
 });
 
-
-
-
 new Vue({
   router,
   store,
@@ -43,16 +39,3 @@ new Vue({
 window.addEventListener("storage", function (e) {
   sessionStorage.setItem(e.key, e.oldValue);
 });
-
-window.onbeforeunload = function () {
-  // debugger;
-  // console.log(store.state, ";store.state");
-  // localStorage.setItem(
-  //   "userData",
-  //   JSON.stringify({
-  //     userInfo: store.state.userInfo,
-  //     loginState: store.state.loginState,
-  //   })
-  // );
-  // cookie.del('AUTH_TOKEN')
-};

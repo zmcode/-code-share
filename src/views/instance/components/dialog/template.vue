@@ -12,7 +12,9 @@
       </v-card-title>
       <v-card-text>
         <div class="templates d-flex flex-clo">
-          <span class="temp-title">选择你的模板(这可能会覆盖你当前实例的代码和外部链接)</span>
+          <span class="temp-title"
+            >选择你的模板(这可能会覆盖你当前实例的代码和外部链接)</span
+          >
           <div class="template-list">
             <div
               class="template pointer d-flex flex-clo flex-ai flex-jcc"
@@ -20,7 +22,10 @@
               :key="template.label"
               @click="selectTemplate(template.label)"
             >
-              <img :src="`/qiNiuCdn/${template.svgName}.svg`" :alt="template.label" />
+              <img
+                :src="`/images/${template.svgName}.svg`"
+                :alt="template.label"
+              />
               <span class="name">{{ template.label }}</span>
             </div>
           </div>
@@ -31,118 +36,122 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations } from "vuex";
 export default {
-  data () {
+  data() {
     return {
-      name: 'templates',
+      name: "templates",
       visible: false,
       publicPath: process.env.BASE_URL,
       templatesInfo: {
         Vanilla: {
-          preprocessor: ['HTML', 'CSS', 'JavaScript'],
+          preprocessor: ["HTML", "CSS", "JavaScript"],
           links: {
             cssLinks: [],
-            JSLinks: []
+            JSLinks: [],
           },
           code: {
-            HTML: '<h1>This is a template of Vanilla!</h1>',
-            CSS: '',
-            JavaScript: ''
-          }
+            HTML: "<h1>This is a template of Vanilla!</h1>",
+            CSS: "",
+            JavaScript: "",
+          },
         },
         Vue2: {
-          preprocessor: ['HTML', 'CSS', 'JavaScript'],
+          preprocessor: ["HTML", "CSS", "JavaScript"],
           links: {
             cssLinks: [],
-            JSLinks: ['https://cdn.staticfile.org/vue/2.6.14/vue.min.js']
+            JSLinks: ["https://cdn.staticfile.org/vue/2.6.14/vue.min.js"],
           },
           code: {
-            HTML: '<div id=\"app\">\n\t{{ message }}\n</div>',
-            CSS: '',
-            JavaScript: `var app = new Vue({\n\tel: '#app',\n\tdata: {\n\t\tmessage: 'This is a template of Vue2!'\n\t}\n})`
-          }
+            HTML: '<div id="app">\n\t{{ message }}\n</div>',
+            CSS: "",
+            JavaScript: `var app = new Vue({\n\tel: '#app',\n\tdata: {\n\t\tmessage: 'This is a template of Vue2!'\n\t}\n})`,
+          },
         },
         Vue3: {
-          preprocessor: ['HTML', 'CSS', 'JavaScript'],
-          links: {
-            cssLinks: [],
-            JSLinks: ['https://cdn.staticfile.org/vue/3.2.31/vue.global.min.js']
-          },
-          code: {
-            HTML: '<div id=\"app\">\n\t{{message}}\n</div>',
-            CSS: '',
-            JavaScript: `const app = {\n\tdata() {\n\t\treturn {\n\t\t\tmessage: 'This is a template of Vue3!'\n\t\t}\n\t}\n}\n\nVue.createApp(app).mount('#app')`
-          }
-        },
-        React: {
-          preprocessor: ['HTML', 'CSS', 'JSX'],
+          preprocessor: ["HTML", "CSS", "JavaScript"],
           links: {
             cssLinks: [],
             JSLinks: [
-              'https://cdn.staticfile.org/react/17.0.0/umd/react.development.min.js',
-              'https://cdn.staticfile.org/react-dom/17.0.0/umd/react-dom.development.min.js'
-            ]
+              "https://cdn.staticfile.org/vue/3.2.31/vue.global.min.js",
+            ],
           },
           code: {
-            HTML: '<div id=\"root\">\n\t{{message}}\n</div>',
-            CSS: '',
-            JavaScript: `ReactDOM.render(\n\t<h1>This is a template of React!</h1>,\n\tdocument.getElementById('root')\n);`
-          }
+            HTML: '<div id="app">\n\t{{message}}\n</div>',
+            CSS: "",
+            JavaScript: `const app = {\n\tdata() {\n\t\treturn {\n\t\t\tmessage: 'This is a template of Vue3!'\n\t\t}\n\t}\n}\n\nVue.createApp(app).mount('#app')`,
+          },
         },
-        Angular: {
-          preprocessor: ['HTML', 'CSS', 'JavaScript'],
+        React: {
+          preprocessor: ["HTML", "CSS", "JSX"],
           links: {
             cssLinks: [],
-            JSLinks: ['https://cdn.staticfile.org/angular.js/1.8.0/angular.min.js']
+            JSLinks: [
+              "https://cdn.staticfile.org/react/17.0.0/umd/react.development.min.js",
+              "https://cdn.staticfile.org/react-dom/17.0.0/umd/react-dom.development.min.js",
+            ],
+          },
+          code: {
+            HTML: '<div id="root">\n\t{{message}}\n</div>',
+            CSS: "",
+            JavaScript: `ReactDOM.render(\n\t<h1>This is a template of React!</h1>,\n\tdocument.getElementById('root')\n);`,
+          },
+        },
+        Angular: {
+          preprocessor: ["HTML", "CSS", "JavaScript"],
+          links: {
+            cssLinks: [],
+            JSLinks: [
+              "https://cdn.staticfile.org/angular.js/1.8.0/angular.min.js",
+            ],
           },
           code: {
             HTML: `<div ng-app="myApp" ng-controller="myCtrl">\n\t{{message}}\n</div>`,
-            CSS: '',
-            JavaScript: `var app = angular.module('myApp', [])\napp.controller('myCtrl', function ($scope) {\n\t$scope.message = 'This is a template of Angular'\n})`
-          }
+            CSS: "",
+            JavaScript: `var app = angular.module('myApp', [])\napp.controller('myCtrl', function ($scope) {\n\t$scope.message = 'This is a template of Angular'\n})`,
+          },
         },
       },
       templateList: [
-        { label: 'Vanilla', svgName: 'Vanilla' },
-        { label: 'Vue2', svgName: 'Vue' },
-        { label: 'Vue3', svgName: 'Vue' },
-        { label: 'React', svgName: 'React' },
-        { label: 'Angular', svgName: 'Angular' },
-      ]
-    }
+        { label: "Vanilla", svgName: "Vanilla" },
+        { label: "Vue2", svgName: "Vue" },
+        { label: "Vue3", svgName: "Vue" },
+        { label: "React", svgName: "React" },
+        { label: "Angular", svgName: "Angular" },
+      ],
+    };
   },
   computed: {
-    ...mapState(['visibleDialogName']),
+    ...mapState(["visibleDialogName"]),
   },
   watch: {
-    visibleDialogName (name) {
-      this.visible = this.name === name
+    visibleDialogName(name) {
+      this.visible = this.name === name;
     },
   },
   methods: {
     ...mapMutations([
-      'setVisibleDialogName',
-      'setAllPrep',
-      'setCurTab',
-      'setAllInstanceExtLinks',
-      'setInstancesCode',
-      'setShouldResetCode'
+      "setVisibleDialogName",
+      "setAllPrep",
+      "setCurTab",
+      "setAllInstanceExtLinks",
+      "setInstancesCode",
+      "setShouldResetCode",
     ]),
-    closeDialog () {
-      this.setVisibleDialogName('')
+    closeDialog() {
+      this.setVisibleDialogName("");
     },
-    selectTemplate (template) {
-      const { preprocessor, links, code } = this.templatesInfo[template]
-      this.setAllPrep(preprocessor)
-      this.setCurTab(preprocessor[0])
-      this.setAllInstanceExtLinks(links)
-      this.setInstancesCode(code)
-      this.setShouldResetCode(true)
-      this.closeDialog()
-    }
-  }
-}
+    selectTemplate(template) {
+      const { preprocessor, links, code } = this.templatesInfo[template];
+      this.setAllPrep(preprocessor);
+      this.setCurTab(preprocessor[0]);
+      this.setAllInstanceExtLinks(links);
+      this.setInstancesCode(code);
+      this.setShouldResetCode(true);
+      this.closeDialog();
+    },
+  },
+};
 </script>
 
 <style lang="scss">

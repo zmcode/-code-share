@@ -6,7 +6,7 @@ const api = {
   /* 获取仓库最高版本 */
   repoLatestV: () => get("/githubApi/repositories/396618645/releases/latest"),
   /* cdn 列表 */
-  searchCDNList: () => get("/qiNiuCdn/cdn.json"),
+  searchCDNList: (params) => get("https://api.cdnjs.com/libraries", params),
 
   /* 用户名是否唯一 */
   usernameUnique: (params) => get("/api/index/isDuplicate", params),
@@ -57,7 +57,7 @@ const api = {
   sendFeedback: (params) => post("/api/feedback/addFeedback", params),
 
   /* 根据实例名或者标签查询实例 */
-  searchWorksByContent: (params) => get("/api/query/queryExample", params),
+  searchWorksByContent: (params) => get("/api/article/list", params),
 
   /* 查询实例列表 */
   searchWorks: (params) => get("/api/query/getExample", params),

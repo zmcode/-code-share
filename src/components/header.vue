@@ -40,8 +40,8 @@
       </div>
     </router-link>
     <div class="vert-divide-line"></div>
-    <nav class="d-flex flex-1 no-select pointer">
-      <v-btn
+    <nav class="d-flex flex-1 no-select pointer" style="align-items: center">
+      <!-- <v-btn
         class="nav-item rounded-0"
         depressed
         v-for="(item, index) in navList"
@@ -58,7 +58,18 @@
           {{ item.text }}
         </v-badge>
         <span v-else>{{ item.text }}</span>
-      </v-btn>
+      </v-btn> -->
+      <v-icon
+        style="width: 30px; height: 30px; line-height: 70px"
+        @click="showSearch = !showSearch"
+        >mdi-magnify</v-icon
+      >
+      <v-text-field
+        v-show="showSearch"
+        style="width: 200px; margin-left: 10px"
+        v-on:keyup.enter="search"
+        v-model="title"
+      ></v-text-field>
     </nav>
     <v-spacer></v-spacer>
     <div class="account d-flex flex-ai">
@@ -96,9 +107,12 @@ export default {
         // },
       ]),
       showNav: false,
+      showSearch: false,
+      title: "",
     };
   },
   mounted() {
+    console.log(this);
     this.judgeShowBadge();
   },
   computed: {
@@ -133,6 +147,9 @@ export default {
         );
       });
     },
+    search() {
+      this.$parent.$children[2].getInstance(this.title, true);
+    },
   },
   components: {
     HeaderAccount,
@@ -148,6 +165,8 @@ export default {
   // top: 0;
   z-index: 1;
   display: flex;
+  border-bottom: 1px solid rgba(60, 60, 60, 0.2);
+  box-shadow: 0 2px 12px 0 rgb(0 0 0 / 20%);
   // backdrop-filter: blur(10px);
   .menu-icon {
     display: none;
@@ -188,6 +207,9 @@ export default {
       align-items: center;
       justify-content: center;
     }
+  }
+  ::v-deep .v-input {
+    flex: initial;
   }
   ::v-deep.v-overlay {
     bottom: -100vh;

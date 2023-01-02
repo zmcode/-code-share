@@ -1,28 +1,32 @@
 <template>
   <v-card class="user-card d-flex no-select">
     <div class="avatar">
-      <v-avatar class="pointer" color="primary" size="50" @click="viewUserProfile">
-        <img v-if="avatar" :src="qiNiuImgLink+avatar" :alt="nickname">
-        <span class="white--text text-h6" v-else>{{nickname|preNickname}}</span>
+      <v-avatar class="pointer" color="primary" size="50">
+        <img v-if="avatar" :src="qiNiuImgLink + avatar" :alt="nickname" />
+        <span class="white--text text-h6" v-else>{{
+          nickname | preNickname
+        }}</span>
       </v-avatar>
       <v-spacer></v-spacer>
     </div>
     <div class="user-info flex-1 d-flex">
       <div class="d-flex flex-clo info-text">
-        <span class="nickname text-md pointer" @click="viewUserProfile">{{nickname}}</span>
-        <span class="about text-xs">{{about||'ta还没想好怎么描述自己...'}}</span>
+        <span class="nickname text-md pointer">{{ nickname }}</span>
+        <span class="about text-xs">{{
+          about || "ta还没想好怎么描述自己..."
+        }}</span>
       </div>
-      <div class="btn-opt" v-if="!isSelf">
+      <!-- <div class="btn-opt" v-if="!isSelf">
         <v-btn color="#3C3C3C" width="90" v-if="myFollow" :loading="loading" @click="unFollow">取消关注</v-btn>
         <v-btn color="primary" width="90" v-else :loading="loading" @click="follow">关注</v-btn>
-      </div>
+      </div> -->
     </div>
   </v-card>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import { qiNiuImgLink } from '@utils/publicData'
+import { mapState } from "vuex";
+import { qiNiuImgLink } from "@utils/publicData";
 export default {
   props: {
     avatar: String,
@@ -31,69 +35,69 @@ export default {
     myFollow: Boolean,
     username: String,
   },
-  inject: ['setFollow'],
+  inject: ["setFollow"],
   data() {
     return {
       qiNiuImgLink,
       loading: false,
-    }
+    };
   },
   computed: {
-    ...mapState(['loginState', 'loginInfo']),
+    ...mapState(["loginState", "loginInfo"]),
     isSelf() {
-      return this.loginInfo.username === this.username
+      return this.loginInfo.username === this.username;
     },
   },
   methods: {
     async follow() {
       if (!this.loginState) {
-        this.$message.info('请登录后再进行相关操作！')
-        return void 0
+        this.$message.info("请登录后再进行相关操作！");
+        return void 0;
       }
-      this.loading = true
+      this.loading = true;
       try {
         const res = await this.$http.addFollow({
           username: this.loginInfo.username,
           followUsername: this.username,
-        })
+        });
         if (res.state) {
           // this.$message.success('关注成功！')
-          this.setFollow(true, this.username)
+          this.setFollow(true, this.username);
         } else {
           // this.$message.error('关注失败！')
         }
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
-      this.loading = false
+      this.loading = false;
     },
     async unFollow() {
       if (!this.loginState) {
-        this.$message.info('请登录后再进行相关操作！')
-        return void 0
+        this.$message.info("请登录后再进行相关操作！");
+        return void 0;
       }
-      this.loading = true
+      this.loading = true;
       try {
         const res = await this.$http.delFollow({
           username: this.loginInfo.username,
           followUsername: this.username,
-        })
+        });
         if (res.state) {
           // this.$message.success('取消关注成功！')
-          this.setFollow(false, this.username)
+          this.setFollow(false, this.username);
         } else {
           // this.$message.error('取消关注失败！')
         }
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
-      this.loading = false
+      this.loading = false;
     },
     viewUserProfile() {
-      this.$router.push(`/user/${this.username}`)
+      this.$router.push(`/user/${this.username}`);
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
