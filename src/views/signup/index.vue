@@ -43,7 +43,7 @@
             :append-icon="showRePwd ? 'mdi-eye' : 'mdi-eye-off'" :type="showRePwd ? 'text' : 'password'"
             :rules="rules.rePassword" :disabled="!isPwdRight" @click:append="showRePwd = !showRePwd">
           </v-text-field>
-          <v-btn block x-large color="primary" :loading="signUpLoading" @click="signUp">注册</v-btn>
+          <!-- <v-btn block x-large color="primary" :loading="signUpLoading" @click="signUp">注册</v-btn> -->
         </v-form>
       </div>
     </div>

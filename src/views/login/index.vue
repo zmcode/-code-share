@@ -117,14 +117,13 @@ export default {
               avatar, 
               id,
             };
-            console.log(loginInfo, "loginInfo");
-            localStorage.setItem("userData", JSON.stringify(loginInfo));
+         
 
             this.setLoginState(true);
             this.setLoginInfo(loginInfo);
 
             this.$message.success("登录成功！");
-            // this.$router.replace(`/html/user/${id}`);
+            this.$router.replace(`/`);
           } else {
             this.$message.error(`登录失败，${res.msg}`);
           }

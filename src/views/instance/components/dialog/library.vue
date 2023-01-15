@@ -211,14 +211,14 @@ export default {
         })
         .then(({ results }) => {
           try {
-            results = results.map((item) => {
-              if (item.latest) {
-                item.fileType = item.latest.slice(
-                  item.latest.lastIndexOf(".") + 1
-                );
-              }
-              return item;
-            });
+            // results = results.map((item) => {
+            //   if (item.latest) {
+            //     item.fileType = item.latest.slice(
+            //       item.latest.lastIndexOf(".") + 1
+            //     );
+            //   }
+            //   return item;
+            // });
 
             this.cssLibList = Object.freeze(
               results.filter((item) => item.fileType === "css")

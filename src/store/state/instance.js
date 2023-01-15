@@ -61,7 +61,8 @@ const instance = {
     id: '',
     saved: true, // 当前实例是否被保存了
     ispublic: true,
-    userId: ''
+    userId: '',
+    categoryId: ''
   },
 
   iframeInit: false, // iframe是否被初始化过

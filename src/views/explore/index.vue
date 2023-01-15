@@ -26,7 +26,7 @@
             <instance-card
               :info="item"
               :cardIndex="index"
-              @setFav="setFav"
+              @search="getInstance(title, categoryId)"
             ></instance-card>
           </div>
           <div
@@ -57,16 +57,18 @@
       </div>
       <div v-show="nothing && !showNothingTip">暂无数据</div>
     </div>
+
   </div>
 </template>
 
 <script>
 import InstanceSkeleton from "@components/skeleton/instanceSkeleton";
-import CateGory from "@components/CateGory";
+
+
 import InstanceCard from "@components/instanceCard";
 import GoToTop from "@components/goToTop";
 import { defPrepOpts } from "@utils/publicData";
-import { judgeMode } from "@utils/editor/judgeMode";
+
 import * as p2b from "@utils/paramsToBase64";
 export default {
   name: "Explore",
@@ -104,6 +106,8 @@ export default {
       isLastPage: false,
       isFirstPage: false,
       init: false,
+      title: '',
+      categoryId: ''
     };
   },
   created() {
@@ -143,7 +147,7 @@ export default {
     },
     switchPage(changeNum) {
       this.page += changeNum;
-      this.getInstance();
+      this.getInstance(this.title, this.categoryId);
     },
     switchRoute() {
       // 切换路由，如果没有name就只更新query查询信息
@@ -166,7 +170,7 @@ export default {
       this.$refs.searchField.blur();
       this.newSearch();
     },
-    async getInstance(title = "", resetPage) {
+    async getInstance(title = "", categoryId = '', resetPage) {
       try {
         this.instanceList = [];
         this.searchLoading = true;
@@ -174,12 +178,14 @@ export default {
         this.nothing = false;
         this.showNothingTip = false;
         this.init = true;
-
+        this.title = title;
+        this.categoryId = categoryId
         const res = await this.$http.searchWorksByContent({
           pageIndex: resetPage ? 1 : this.page,
           pageSize: 12,
           type: "code",
           title,
+          categoryId
           // currentPage: this.page,
           // queryContent: keyword || "",
         });
@@ -220,7 +226,6 @@ export default {
     InstanceSkeleton,
     InstanceCard,
     GoToTop,
-    CateGory,
   },
 };
 </script>

@@ -104,8 +104,8 @@ export default {
       })
     },
     shareLink() {
-      const { username, exampleId } = this.info
-      copyToClip(`${env.client}/work/${username}/${exampleId}`)
+      const { username, exampleId, userId } = this.info
+      copyToClip(`${env.client}/work/${userId}/${exampleId}`)
       this.$message.success('链接已复制到剪切板！')
     },
     async like() {
@@ -122,7 +122,7 @@ export default {
         // 根据当前是否已喜欢来判定调用喜欢还是取消喜欢接口
         const api = this.$http
         const req = myFavorites ? api.delLikeWork : api.addLikeWork
-        const res = await req({ username: this.loginInfo.username, exampleId })
+        const res = await req({ username: this.loginInfo.work, exampleId })
         if (res.state) {
           // this.$message.success(myFavorites ? '已取消喜爱！' : '已喜爱！')
           this.setFav(!myFavorites)
@@ -136,9 +136,9 @@ export default {
       this.$emit('setFav', isFav, this.cardIndex)
     },
     viewInstance() {
-      const { username, exampleId } = this.info
+      const { userId, exampleId } = this.info
       this.$router.push({
-        path: `/work/${username}/${exampleId}`,
+        path: `/work/${userId}/${exampleId}`,
       })
     },
   },

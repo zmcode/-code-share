@@ -28,7 +28,7 @@ const defPrepOpts = {
 const limitMimeType = ['html', 'css', 'js', 'jsx', 'md', 'pug', 'sass', 'scss', 'less', 'styl', 'ts', 'coffee']
 
 // const qiNiuImgLink = isProd?'//images.lliiooiill.cn/':'//images.firstbird.asia/'
-const qiNiuImgLink = isProd ? '' : 'http://localhost:8080/'
+const qiNiuImgLink = isProd ? '' : 'http://localhost:8080'
 
 const qiNiuRowLink = 'http://images.lliiooiill.cn/'
 

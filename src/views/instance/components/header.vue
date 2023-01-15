@@ -11,20 +11,25 @@
           isNewWork ? "新建实例" : curInstanceDetail.title
         }}</v-text-field> -->
         <span class="text-small">{{
-          isNewWork ? "新建实例" : curInstanceDetail.title
+          curInstanceDetail.title || "新建实例"
         }}</span>
-        <span class="text-xs author" v-if="!isNewWork" @click="goToUserProfile"
+        <span class="text-xs author" @click="goToUserProfile"
           >By {{ curInstanceDetail.nickname }}</span
         >
       </div>
       <v-btn
         icon
         small
-        v-if="!isNewWork && isSelfInstance"
+        v-if="loginState"
         @click="setVisibleDialogName('instanceConfig')"
       >
         <v-icon>mdi-pencil-outline</v-icon>
       </v-btn>
+
+      <v-btn icon small v-if="loginState && (isSelfInstance || isNewWor)" @click="showCateGory = true">
+        <v-icon>mdi-folder</v-icon>
+      </v-btn>
+
       <v-menu
         open-delay="200"
         close-delay="200"
@@ -100,6 +105,11 @@
       <header-account dense></header-account>
     </div>
     <instance-config></instance-config>
+    <tree
+      :value.sync="showCateGory"
+      @getValue="getValue"
+      :active="[categoryId]"
+    />
   </div>
 </template>
 
@@ -108,6 +118,7 @@ import { mapMutations, mapState, mapGetters } from "vuex";
 
 import HeaderAccount from "@components/headerAccount.vue";
 import InstanceConfig from "@components/dialog/instanceConfig.vue";
+import tree from "@components/tree.vue";
 export default {
   inject: ["changeRouterKey"],
   data() {
@@ -115,11 +126,15 @@ export default {
       saveInstanceLoading: false,
       likeLoading: false,
       tags: [],
+      categoryId: "",
+      showCateGory: false
     };
   },
   created() {
     const tags = this.curInstanceDetail.tags;
     this.tags = tags ? tags.split(",") : [];
+    this.categoryId = this.curInstanceDetail.categoryId;
+
   },
   computed: {
     ...mapState(["loginState", "loginInfo", "curInstanceDetail"]),
@@ -127,6 +142,7 @@ export default {
     isNewWork() {
       return this.$route.name === "NewWork";
     },
+
     hideLike() {
       const isNewWork = this.isNewWork;
       return isNewWork || this.isSelfInstance;
@@ -137,6 +153,9 @@ export default {
   },
   methods: {
     ...mapMutations(["setVisibleDialogName", "setCurInstanceDetail"]),
+    getValue(value) {
+      this.categoryId = value;
+    },
     async saveInstance() {
       this.saveInstanceLoading = true;
       const instance = this.curInstanceDetail;
@@ -155,7 +174,7 @@ export default {
         headTags,
       };
       const reqData = {
-        title: isNewWork ? "新建实例" : instance.title, // title
+        title: instance.title || "新建实例", // title
         ispublic: instance.ispublic, // true
         // select: "", // category
         content: JSON.stringify({
@@ -170,11 +189,12 @@ export default {
         status: 0,
         isComment: 1,
         isTop: 0,
+        categoryId: this.categoryId,
       };
       // 如果不是第一次创建实例就传id
-      console.log(!isNewWork, "!isNewWork");
+
       !isNewWork && ((reqData.id = instance.id), (reqData.slug = instance.id));
-      console.log(reqData, "reqData");
+
       try {
         // 保存实例，如果是第一次保存(新建)，则重定向到正式实例页面
         let res = {};
@@ -191,8 +211,9 @@ export default {
           this.setCurInstanceDetail({ saved: true });
           // 重定向到正式实例页面
           if (isNewWork) {
+
             this.$router
-              .replace(`/html/work/${loginInfo.username}/${res.data.id}`)
+              .replace(`/html/work/${this.loginInfo.id}/${res.data.id}`)
               .then(() => {
                 this.changeRouterKey();
               });
@@ -207,6 +228,7 @@ export default {
     },
     goToUserProfile() {
       // 跳转到当前实例用户首页
+
       const username = this.curInstanceDetail.username;
       this.$router.push(`/html/user/${username}`);
     },
@@ -231,6 +253,7 @@ export default {
   components: {
     HeaderAccount,
     InstanceConfig,
+    tree,
   },
 };
 </script>

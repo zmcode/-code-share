@@ -191,7 +191,7 @@ export default {
   },
   mounted() {
     this.initUserData();
-    console.log(this.curUserDetail, "curUserDetail");
+
   },
   computed: {
     ...mapState(["loginInfo", "loginState", "curUserDetail"]),

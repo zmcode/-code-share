@@ -1,38 +1,5 @@
 <template>
   <div id="header">
-    <v-btn
-      class="menu-icon"
-      icon
-      height="50"
-      width="50"
-      @click="showNav = !showNav"
-    >
-      <v-icon>mdi-menu</v-icon>
-    </v-btn>
-    <v-navigation-drawer
-      style="height: 100vh"
-      absolute
-      temporary
-      v-model="showNav"
-    >
-      <v-list>
-        <v-list-item
-          link
-          v-for="item in navList"
-          :key="item.name"
-          @click="navJumpTo(item)"
-        >
-          <v-badge
-            color="primary"
-            dot
-            v-if="item.text === '新特性' && hasNewFeatures"
-          >
-            <v-list-item-title>{{ item.text }}</v-list-item-title>
-          </v-badge>
-          <v-list-item-title v-else>{{ item.text }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
     <router-link :to="{ name: 'Home' }">
       <div class="logo pointer no-select d-flex flex-ai">
         <img class="logo-img" src="../assets/logo/logo.svg" alt="" />
@@ -61,6 +28,17 @@
       </v-btn> -->
       <v-icon
         style="width: 30px; height: 30px; line-height: 70px"
+        @click="showCateGory = true"
+        >mdi-folder</v-icon
+      >
+
+      <v-icon
+        style="width: 30px; height: 30px; line-height: 70px; margin-left: 20px"
+        @click="reset"
+        >mdi-restart</v-icon
+      >
+      <v-icon
+        style="width: 30px; height: 30px; line-height: 70px; margin-left: 20px"
         @click="showSearch = !showSearch"
         >mdi-magnify</v-icon
       >
@@ -75,6 +53,7 @@
     <div class="account d-flex flex-ai">
       <header-account />
     </div>
+    <tree :value.sync="showCateGory" @getValue="getValue" :active="[activeValue]"/>
   </div>
 </template>
 
@@ -82,6 +61,7 @@
 import { mapState, mapMutations } from "vuex";
 import HeaderAccount from "./headerAccount.vue";
 import localStorage from "@utils/localStorage";
+import tree from "@components/tree.vue";
 
 export default {
   data() {
@@ -109,11 +89,12 @@ export default {
       showNav: false,
       showSearch: false,
       title: "",
+      showCateGory: false,
+      activeValue: "",
     };
   },
   mounted() {
-    console.log(this);
-    this.judgeShowBadge();
+    // this.judgeShowBadge();
   },
   computed: {
     ...mapState(["hasNewFeatures"]),
@@ -140,19 +121,28 @@ export default {
     },
     judgeShowBadge() {
       // 获取JS Encoder最新版本号，如果和本地localStorage存储的一致，则表示用户已读，不显示徽章
-      this.$http.repoLatestV().then((res) => {
-        const latestV = res.tag_name;
-        this.setHasNewFeatures(
-          latestV !== localStorage.get("latestViewVersion")
-        );
-      });
+      // this.$http.repoLatestV().then((res) => {
+      //   const latestV = res.tag_name;
+      //   this.setHasNewFeatures(
+      //     latestV !== localStorage.get("latestViewVersion")
+      //   );
+      // });
+    },
+    getValue(value) {
+      this.activeValue = value;
+      this.search();
+    },
+    reset() {
+      this.title = ''
+      this.$parent.$children[2].getInstance("", "", true);
     },
     search() {
-      this.$parent.$children[2].getInstance(this.title, true);
+      this.$parent.$children[2].getInstance(this.title, this.activeValue, true);
     },
   },
   components: {
     HeaderAccount,
+    tree,
   },
 };
 </script>

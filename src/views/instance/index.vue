@@ -170,7 +170,7 @@ export default {
       try {
         const res = await this.$http.getWork({ articleId: exampleId });
         if (res.code == 200) {
-          const { id, title, content, user, summary } = res.data;
+          const { id, title, content, user, summary, categoryId } = res.data;
           const contentData = JSON.parse(content);
           const { htmlStyle, cssStyle, jsStyle, codeContent } = contentData;
           const { instanceCode, instanceExtLinks, headTags } = codeContent;
@@ -184,6 +184,7 @@ export default {
             ispublic: summary === "1" ? true : false,
             saved: true,
             userId: user.id,
+            categoryId
           });
           this.setAllPrep([htmlStyle, cssStyle, jsStyle]);
           this.setCurTab(htmlStyle);

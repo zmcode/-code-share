@@ -47,7 +47,7 @@
           >登录
         </v-btn>
       </router-link>
-      <router-link to="/html/signup">
+      <!-- <router-link to="/html/signup">
         <v-btn
           class="sign-up-btn"
           depressed
@@ -56,7 +56,7 @@
           :class="dense ? 'radius-2' : ''"
           >注册
         </v-btn>
-      </router-link>
+      </router-link> -->
     </div>
   </div>
 </template>
@@ -150,20 +150,21 @@ export default {
             okText: "登出",
           }).then((isLogout) => {
             if (!isLogout) return void 0;
-            // 删除登录身份凭证
-            cookie.del("AUTH_TOKEN");
-            // 取消自动登录
-            localStore.set("REMEMBER_ME", false);
-            // 临时的第三方登录TMP_REMEMBER_ME
-            sessionStorage.removeItem("TMP_REMEMBER_ME");
-            localStorage.removeItem("userData");
-            this.setLoginState(false);
-            this.setLoginInfo({
-              username: "",
-              nickname: "",
-              avatar: "",
-            });
+
             this.$http.logout().then((res) => {
+              // 删除登录身份凭证
+              cookie.del("AUTH_TOKEN");
+              // 取消自动登录
+              localStore.set("REMEMBER_ME", false);
+              // 临时的第三方登录TMP_REMEMBER_ME
+              sessionStorage.removeItem("TMP_REMEMBER_ME");
+
+              this.setLoginState(false);
+              this.setLoginInfo({
+                username: "",
+                nickname: "",
+                avatar: "",
+              });
               this.$router.replace({ name: "Home" }).catch((err) => {});
             });
           });

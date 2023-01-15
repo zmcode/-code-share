@@ -63,6 +63,10 @@
       <v-btn class="icon-share" icon @click="shareLink">
         <v-icon>mdi-share-variant</v-icon>
       </v-btn>
+
+      <v-btn class="icon-share" icon @click="deleteCode" v-if="loginState && (isSelfProfile)">
+        <v-icon>mdi-delete</v-icon>
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -93,15 +97,36 @@ export default {
     },
   },
   methods: {
-
+    deleteCode() {
+      this.$alert({
+        title: "删除实例",
+        content: "实例将会永久删除并且不可恢复",
+        okText: "确认并删除",
+        okColor: "error",
+      })
+        .then(async (res) => {
+          if (res) {
+            const delRes = await this.$http.delWork(this.info.id);
+            if (delRes.code === 200) {
+              this.$emit("search");
+              this.$message.success("实例删除成功！");
+            } else {
+              this.$message.error("实例删除失败！");
+            }
+          }
+        })
+        .catch((err) => {
+          this.$message.error(err.msg);
+        });
+    },
     shareLink() {
-      const { user, id } = this.info;
-      copyToClip(`${env.client}/html/work/${user.userName}/${id}`);
+      const { user, id, userId } = this.info;
+      copyToClip(`${env.client}/html/work/${userId}/${id}`);
       this.$message.success("链接已复制到剪切板！");
     },
     viewInstance() {
-      const { user, id } = this.info;
-      this.$router.push(`/html/work/${user.userName}/${id}`);
+      const { user, id, userId } = this.info;
+      this.$router.push(`/html/work/${userId}/${id}`);
     },
     viewUserProfile() {
       this.$router.push(`/user/${this.info.username}`);

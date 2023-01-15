@@ -1,7 +1,7 @@
 <template>
   <v-app id="app" :class="bgcClass">
     <jse-header v-show="!hideHAF" />
-    <section class="app-content" :class="{'app-full-screen':hideHAF}">
+    <section class="app-content" :class="{ 'app-full-screen': hideHAF }">
       <router-view :key="routerKey" />
       <jse-snackbar />
     </section>
@@ -10,59 +10,66 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
-import Header from '@components/header.vue'
-import Footer from '@components/footer.vue'
-import Snackbar from '@components/snackbar.vue'
+import { mapMutations } from "vuex";
+import Header from "@components/header.vue";
+import Footer from "@components/footer.vue";
+import Snackbar from "@components/snackbar.vue";
+
 export default {
-  name: 'App',
+  name: "App",
   data() {
     return {
-      bgcClass: '',
+      bgcClass: "",
       routerKey: 0,
-    }
+    };
   },
   provide() {
     return {
       changeRouterKey: () => {
-        this.routerKey++
+        this.routerKey++;
       },
-    }
+    };
   },
   mounted() {
-    this.setBgc()
+    this.setBgc();
+    this.$http.isLogin().then((res) => {
+      if (res.data) {
+        this.setLoginInfo(res.data);
+        this.setLoginState(true);
+      }
+    });
   },
   computed: {
     path() {
-      return this.$route.path.replace('/', '') || 'home'
+      return this.$route.path.replace("/", "") || "home";
     },
     hideHAF() {
-      return this.$route.meta.hideHAF
+      return this.$route.meta.hideHAF;
     },
   },
   watch: {
     path() {
-      this.setBgc()
+      this.setBgc();
     },
   },
   methods: {
-    ...mapMutations(['setLoginInfo', 'setLoginState']),
+    ...mapMutations(["setLoginInfo", "setLoginState"]),
     setBgc() {
       // 根据路由更换不同的背景
-      this.bgcClass = ''
-      const path = this.path
-      const list = ['', 'features', 'feedback']
+      this.bgcClass = "";
+      const path = this.path;
+      const list = ["", "features", "feedback"];
       if (list.includes(path)) {
-        this.bgcClass = `bgc-animation bgc-before ${path}-bgc`
+        this.bgcClass = `bgc-animation bgc-before ${path}-bgc`;
       }
     },
   },
   components: {
-    'jse-header': Header,
-    'jse-footer': Footer,
-    'jse-snackbar': Snackbar,
+    "jse-header": Header,
+    "jse-footer": Footer,
+    "jse-snackbar": Snackbar,
   },
-}
+};
 </script>
 
 <style lang="scss">
@@ -88,7 +95,7 @@ export default {
 }
 .bgc-before {
   &::before {
-    content: '';
+    content: "";
     width: 100%;
     height: 100%;
     position: absolute;

@@ -207,13 +207,7 @@ router.beforeEach(async (to, _, next) => {
   // } else {
   //   await login();
   // }
-  const userData = localStorage.getItem("userData");
 
-  if (!store.state.loginInfo.username && userData) {
-    console.log(JSON.parse(userData), "JSON.parse(userData)");
-    store.commit("setLoginInfo", JSON.parse(userData));
-    store.commit("setLoginState", true);
-  }
   next();
 });
 
